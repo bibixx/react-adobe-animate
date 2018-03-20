@@ -1,0 +1,39 @@
+{
+  "name": "react-adobe-animate",
+  "version": "1.0.0",
+  "description": "React component that helps embed Adobe Animate's animations into your project.",
+  "main": "build/index.js",
+  "scripts": {
+    "start": "webpack --watch --mode development",
+    "build": "webpack --mode production"
+  },
+  "author": {
+    "name": "Bartosz Legięć",
+    "email": "bartosz@legiec.eu",
+    "url": "https://legiec.io"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bibixx/react-adobe-animate"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.2.2",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
+    "eslint": "^4.19.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.7.0"
+  },
+  "dependencies": {
+    "prop-types": "^15.6.1",
+    "react": "^16.2.0",
+    "webpack": "^4.1.1",
+    "webpack-cli": "^2.0.12"
+  }
+}
