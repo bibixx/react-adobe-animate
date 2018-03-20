@@ -55,7 +55,14 @@ export default class AnimateCC extends React.Component {
   render() {
     const color = AnimateCC.hexToRgba(this.properties.color, this.properties.opacity);
 
-    const { style: additionalStyles, ...props } = this.props;
+    const {
+      composition,
+      fileName,
+      getAnimationObject,
+      paused,
+      style: additionalStyles,
+      ...props
+    } = this.props;
 
     return (
       <div>
