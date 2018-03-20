@@ -16,6 +16,7 @@ The component helps to embed animations from Adobe Animate.
 
 ```javascript
 import React from "react";
+import AnimateCC from "react-adobe-animate";
 
 export default class Component extends React.Component {
   constructor() {
@@ -33,7 +34,7 @@ export default class Component extends React.Component {
     return (
       <div style={{ width: "400px" }}>
         <AnimateCC
-          fileName="animationName"
+          animationName="animationName"
           composition="C1475B64B160904BB90B34246A5FF54B"
           getAnimationObject={this.getAnimationObject}
           paused={this.state.paused}
