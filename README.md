@@ -27,7 +27,7 @@ export default class Component extends React.Component {
 
   onClick = () => this.setState({ paused: !this.state.paused })
 
-  getAnimationObject = obj => (this.lis = obj, window.lis = obj)
+  getAnimationObject = obj => (this.animationObject = obj)
 
   render() {
     return (
@@ -48,8 +48,8 @@ export default class Component extends React.Component {
 
 ### This component accepts a few props
 
-* composition[string] – an id of a animation that you can get from .html file generate by Adobe Animate (line 24: `var comp=AdobeAn.getComposition("2697D3D4B7EF4694B053B7ED09E94D07");`)
-* fileName[string] – name of a file exported from Adobe Animate (one you specify in publish settings)
+* composition[string] – an id of a animation that you can get from .html file generate by Adobe Animate (line 24: `var comp=AdobeAn.getComposition("C1475B64B160904BB90B34246A5FF54B");`)
+* animationName[string] – name of animation (line 32: `exportRoot = new lib.animationName();`)
 * getAnimationObject[function] – it is fired after component was mounted. It takes 1 argument – animation object that enables you to fire functions created in Adobe Animate
 * paused[boolean] – whether an animation should be paused
 * all other props will be passed to div surrounding canvas

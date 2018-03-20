@@ -5,7 +5,7 @@ import init from "./adobeFunctions";
 export default class AnimateCC extends React.Component {
   static propTypes = {
     composition: PropTypes.string.isRequired,
-    fileName: PropTypes.string.isRequired,
+    animationName: PropTypes.string.isRequired,
     getAnimationObject: PropTypes.func,
     paused: PropTypes.bool,
     style: PropTypes.object,
@@ -36,7 +36,7 @@ export default class AnimateCC extends React.Component {
   componentDidMount() {
     init(
       this.props.composition,
-      this.props.fileName,
+      this.props.animationName,
       this.canvas,
       this.animationContainer,
       this.domOverlayContainer,
@@ -57,7 +57,7 @@ export default class AnimateCC extends React.Component {
 
     const {
       composition,
-      fileName,
+      animationName,
       getAnimationObject,
       paused,
       style: additionalStyles,
