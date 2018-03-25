@@ -58,3 +58,7 @@ export default class Component extends React.Component {
 #### How do I insert animations published from the same file?
 
 Unfortunately it isn't possible to export from Adobe Animate two unique animations. However you can make one! Simply replace all occurances of composition id inside your .js file of an animation to one created by you. Composition id is this long string on line 24: `var comp=AdobeAn.getComposition("C1475B64B160904BB90B34246A5FF54B");` in .html file. (P.S. Also make sure that file names of published animations are unique)
+
+### Example
+
+[https://bibixx.github.io/react-adobe-animate/](https://bibixx.github.io/react-adobe-animate/)
