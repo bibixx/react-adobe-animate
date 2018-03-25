@@ -35,7 +35,6 @@ export default class Component extends React.Component {
       <div style={{ width: "400px" }}>
         <AnimateCC
           animationName="animationName"
-          composition="C1475B64B160904BB90B34246A5FF54B"
           getAnimationObject={this.getAnimationObject}
           paused={this.state.paused}
         />
@@ -49,12 +48,13 @@ export default class Component extends React.Component {
 
 ### This component accepts a few props
 
-* composition[string] – an id of a animation that you can get from .html file generate by Adobe Animate (line 24: `var comp=AdobeAn.getComposition("C1475B64B160904BB90B34246A5FF54B");`)
-* animationName[string] – name of animation (line 32: `exportRoot = new lib.animationName();`)
+* animationName[string] – name of animation (line 32: `exportRoot = new lib.animationName();`, also usually name of published file)
 * getAnimationObject[function] – it is fired after component was mounted. It takes 1 argument – animation object that enables you to fire functions created in Adobe Animate
 * paused[boolean] – whether an animation should be paused
 * all other props will be passed to div surrounding canvas
 
-### Exporting from Adobe Animate
+### FAQ
 
-Make sure to have `Make responsive` checked
+#### How do I insert animations published from the same file?
+
+Unfortunately it isn't possible to export from Adobe Animate two unique animations. However you can make one! Simply replace all occurances of composition id inside your .js file of an animation to one created by you. Composition id is this long string on line 24: `var comp=AdobeAn.getComposition("C1475B64B160904BB90B34246A5FF54B");` in .html file. (P.S. Also make sure that file names of published animations are unique)

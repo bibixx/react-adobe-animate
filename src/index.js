@@ -4,7 +4,6 @@ import init from "./adobeFunctions";
 
 export default class AnimateCC extends React.Component {
   static propTypes = {
-    composition: PropTypes.string.isRequired,
     animationName: PropTypes.string.isRequired,
     getAnimationObject: PropTypes.func,
     paused: PropTypes.bool,
@@ -25,17 +24,17 @@ export default class AnimateCC extends React.Component {
     return `rgba(${r}, ${g}, ${b}, ${opacity})`;
   }
 
-  constructor(props) {
+  constructor() {
     super();
-    const comp = AdobeAn.getComposition(props.composition);
-    const { properties } = comp.getLibrary();
+    const properties = {};
 
-    this.properties = properties;
+    this.state = {
+      properties,
+    };
   }
 
   componentDidMount() {
     init(
-      this.props.composition,
       this.props.animationName,
       this.canvas,
       this.animationContainer,
@@ -45,6 +44,7 @@ export default class AnimateCC extends React.Component {
         this.lib = l;
         this.lib.tickEnabled = !this.props.paused;
       },
+      properties => (this.setState({ properties })),
     );
   }
 
@@ -53,16 +53,28 @@ export default class AnimateCC extends React.Component {
   }
 
   render() {
-    const color = AnimateCC.hexToRgba(this.properties.color, this.properties.opacity);
-
     const {
-      composition,
       animationName,
       getAnimationObject,
       paused,
       style: additionalStyles,
       ...props
     } = this.props;
+
+    const { properties } = this.state;
+
+    if (Object.keys(properties).length === 0) {
+      return (
+        <div>
+          <div ref={(el) => { this.animationContainer = el; }}>
+            <canvas ref={(el) => { this.canvas = el; }} />
+            <div ref={(el) => { this.domOverlayContainer = el; }} />
+          </div>
+        </div>
+      );
+    }
+
+    const color = AnimateCC.hexToRgba(properties.color, properties.opacity);
 
     return (
       <div>
@@ -88,8 +100,8 @@ export default class AnimateCC extends React.Component {
             style={{
               pointerEvents: "none",
               overflow: "hidden",
-              width: `${this.properties.width}px`,
-              height: `${this.properties.height}px`,
+              width: `${properties.width}px`,
+              height: `${properties.height}px`,
               position: "absolute",
               left: "0px",
               top: "0px",

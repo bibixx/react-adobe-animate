@@ -2,9 +2,31 @@
 
 var fileName, composition, getAnimationObject;
 var canvas, stage, exportRoot, anim_container, dom_overlay_container, fnStartAnimation;
-export default function init(_composition, _fileName, _canvas, _animationContainer, _domOverlayContainer, _getAnimationObject) {
+
+const getComposition = (searchedName) => {
+  const compositionIds = Object.keys(window.AdobeAn.compositions);
+
+  const [foundComposition] = compositionIds.filter( (id) => {
+    const library = window.AdobeAn.compositions[id].getLibrary();
+    const props = Object.keys(library);
+
+    const independent = props.filter(prop => {
+      if (library[prop].prototype && library[prop].prototype.mode && library[prop].prototype.mode === "independent" ) {
+        return true;
+      }
+      
+      return false;
+    } );
+
+    return independent.filter( name => name === searchedName ).length > 0;
+  } );
+
+  return foundComposition;
+};
+
+export default function init(_fileName, _canvas, _animationContainer, _domOverlayContainer, _getAnimationObject, _setState) {
   fileName = _fileName;
-  composition = _composition;
+  composition = getComposition(_fileName);
   getAnimationObject = _getAnimationObject;
 
   canvas = _canvas;
@@ -12,6 +34,7 @@ export default function init(_composition, _fileName, _canvas, _animationContain
   dom_overlay_container = _domOverlayContainer;
   var comp = AdobeAn.getComposition(composition);
   var lib = comp.getLibrary();
+  _setState(lib.properties)
   handleComplete({}, comp);
 }
 function handleComplete(evt, comp) {
