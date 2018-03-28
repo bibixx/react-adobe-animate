@@ -48,6 +48,10 @@ export default class AnimateCC extends React.Component {
     );
   }
 
+  componentWillUnmount() {
+      this.lib.visible = false
+  }
+
   componentWillReceiveProps({ paused }) {
     this.lib.tickEnabled = !paused;
   }
