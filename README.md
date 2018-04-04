@@ -1,4 +1,8 @@
 # Adobe Animate React component
+![npm](https://img.shields.io/npm/dt/react-adobe-animate.svg)
+![npm](https://img.shields.io/npm/v/react-adobe-animate.svg)
+
+
 
 The component helps to embed animations from Adobe Animate.
 
