@@ -24,9 +24,9 @@ const getComposition = (searchedName) => {
   return foundComposition;
 };
 
-export default function init(_fileName, _canvas, _animationContainer, _domOverlayContainer, _getAnimationObject, _setState) {
+export default function init(_fileName, _canvas, _animationContainer, _domOverlayContainer, _getAnimationObject, _setState, _composition) {
   fileName = _fileName;
-  composition = getComposition(_fileName);
+  composition = _composition === null ? getComposition(_fileName) : _composition;
   getAnimationObject = _getAnimationObject;
 
   canvas = _canvas;

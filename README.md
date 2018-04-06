@@ -52,10 +52,14 @@ export default class Component extends React.Component {
 
 ### This component accepts a few props
 
-* animationName[string] – name of animation (line 32: `exportRoot = new lib.animationName();`, also usually name of published file)
-* getAnimationObject[function] – it is fired after component was mounted. It takes 1 argument – animation object that enables you to fire functions created in Adobe Animate
-* paused[boolean] – whether an animation should be paused
-* all other props will be passed to div surrounding canvas
+| Prop name | Type | Required | Description  |
+| --------- | ---- | -------- | ------------ |
+| animationName | string | true | Name of animation (line 32: `exportRoot = new lib.animationName();`, usually name of published file) |
+composition | string | false | If you have two animations with same name you can specify an id of that animation. You can get it from .html file generate by Adobe Animate (line 24: `var&nbsp;comp=AdobeAn.getComposition("C1475B64B160904BB90B34246A5FF54B");`) |
+| getAnimationObject | function | false | It is fired after component was mounted. It takes 1 argument – animation object that enables you to fire functions created in Adobe Animate
+paused | boolean | false | Whether an animation should be paused
+
+All other props will be passed to div surrounding canvas
 
 ### FAQ
 

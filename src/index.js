@@ -5,6 +5,7 @@ import init from "./adobeFunctions";
 export default class AnimateCC extends React.Component {
   static propTypes = {
     animationName: PropTypes.string.isRequired,
+    composition: PropTypes.string,
     getAnimationObject: PropTypes.func,
     paused: PropTypes.bool,
     style: PropTypes.object,
@@ -12,6 +13,7 @@ export default class AnimateCC extends React.Component {
 
   static defaultProps = {
     getAnimationObject: () => {},
+    composition: null,
     paused: false,
     style: {},
   }
@@ -46,6 +48,7 @@ export default class AnimateCC extends React.Component {
           this.lib.tickEnabled = !this.props.paused;
         },
         properties => (this.setState({ properties })),
+        this.props.composition,
       );
     } catch (e) {
       if (e.name === "AnimateCC") {
