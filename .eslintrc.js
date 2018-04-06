@@ -25,6 +25,7 @@ module.exports = {
     "react/no-danger": 0,
     "react/jsx-curly-spacing": [2, {"when": "never", "allowMultiline": false}],
     "react/prefer-stateless-function": 0,
+    "react/no-did-mount-set-state": 0,
     "no-sequences": 0,
 
     "no-return-assign": 0,
