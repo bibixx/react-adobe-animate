@@ -26,34 +26,50 @@ export default class AnimateCC extends React.Component {
 
   constructor() {
     super();
-    const properties = {};
 
     this.state = {
-      properties,
+      properties: {},
+      error: false,
     };
   }
 
   componentDidMount() {
-    init(
-      this.props.animationName,
-      this.canvas,
-      this.animationContainer,
-      this.domOverlayContainer,
-      (l) => {
-        this.props.getAnimationObject(l);
-        this.lib = l;
-        this.lib.tickEnabled = !this.props.paused;
-      },
-      properties => (this.setState({ properties })),
-    );
-  }
+    try {
+      init(
+        this.props.animationName,
+        this.canvas,
+        this.animationContainer,
+        this.domOverlayContainer,
+        (l) => {
+          this.props.getAnimationObject(l);
+          this.lib = l;
+          this.lib.tickEnabled = !this.props.paused;
+        },
+        properties => (this.setState({ properties })),
+      );
+    } catch (e) {
+      if (e.name === "AnimateCC") {
+        console.error(`AnimateCC: ${e.message}`);
+      } else {
+        throw e;
+      }
 
-  componentWillUnmount() {
-      this.lib.visible = false
+      this.setState({
+        error: true,
+      });
+    }
   }
 
   componentWillReceiveProps({ paused }) {
-    this.lib.tickEnabled = !paused;
+    if (!this.state.error) {
+      this.lib.tickEnabled = !paused;
+    }
+  }
+
+  componentWillUnmount() {
+    if (!this.state.error) {
+      this.lib.visible = false;
+    }
   }
 
   render() {

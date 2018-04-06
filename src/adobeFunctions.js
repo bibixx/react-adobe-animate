@@ -32,13 +32,25 @@ export default function init(_fileName, _canvas, _animationContainer, _domOverla
   canvas = _canvas;
   anim_container = _animationContainer;
   dom_overlay_container = _domOverlayContainer;
-  var comp = AdobeAn.getComposition(composition);
-  var lib = comp.getLibrary();
+
+  try {
+    var comp = AdobeAn.getComposition(composition);
+    var lib = comp.getLibrary();
+  } catch (e) {
+    if (e.message === "Cannot read property 'getLibrary' of undefined") {
+      const err = new Error(`Animation with name ${_fileName} was not found`, "test");
+      err.name = "AnimateCC";
+      throw err;
+    }
+    
+    throw e;
+  }
+
   _setState(lib.properties)
   handleComplete({}, comp);
 }
 function handleComplete(evt, comp) {
-  //This function is always called, irrespective of the content. You can use the variable "stage" after it is created in token create_stage.
+  //This function is always called, irrespective of the content. You can use the variable "stage" after it is created in token create_stage. 
   var lib = comp.getLibrary();
   var ss = comp.getSpriteSheet();
   exportRoot = new lib[fileName]();
