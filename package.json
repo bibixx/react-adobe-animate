@@ -4,7 +4,7 @@
   "description": "React component that helps embed Adobe Animate's animations into your project.",
   "main": "build/index.js",
   "scripts": {
-    "start": "webpack --watch --mode production",
+    "start": "NODE_ENV=production webpack --watch --mode development",
     "build": "webpack --mode production"
   },
   "author": {

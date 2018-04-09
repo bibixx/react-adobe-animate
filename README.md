@@ -54,7 +54,7 @@ export default class Component extends React.Component {
 
 | Prop name | Type | Required | Description  |
 | --------- | ---- | -------- | ------------ |
-| animationName | string | true | Name of animation (line 32: `exportRoot = new lib.animationName();`, usually name of published file) |
+| animationName | string | true | Name of animation (line 32: `exportRoot = new lib.animationName();` or after `// stage content:` comment. There the name is `(lib.animationName = function`. Also usually name of published file) |
 composition | string | false | If you have two animations with same name you can specify an id of that animation. You can get it from .html file generate by Adobe Animate (line 24: `var&nbsp;comp=AdobeAn.getComposition("C1475B64B160904BB90B34246A5FF54B");`) |
 | getAnimationObject | function | false | It is fired after component was mounted. It takes 1 argument – animation object that enables you to fire functions created in Adobe Animate
 paused | boolean | false | Whether an animation should be paused
