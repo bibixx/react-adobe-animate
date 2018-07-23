@@ -1,0 +1,51 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:carbon
+
+    steps:
+      - checkout
+      - run:
+          name: "Set up npm auth token"
+          command: echo //registry.npmjs.org/:_authToken=$NPM_TOKEN > ~/.npmrc
+      - run:
+          name: "Deploy image to npm"
+          command: npm publish
+
+  test:
+    docker:
+      - image: circleci/node:carbon
+    steps:
+      - checkout
+      - run:
+          name: Run eslint
+          command: yarn lint
+      # - run:
+      #     name: Run test
+      #     command: yarn test
+
+  test-version:
+    docker:
+      - image: circleci/node:carbon
+    steps:
+      - checkout
+      - run:
+          name: Run version test
+          command: yarn test:version
+
+workflows:
+  version: 2
+
+  build:
+    jobs:
+      - test-version
+      - test
+      - build:
+          requires:
+            - test-version
+            - test
+          filters:
+            branches:
+              only:
+                - master

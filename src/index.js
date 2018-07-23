@@ -3,6 +3,14 @@ import PropTypes from "prop-types";
 import init from "./adobeFunctions";
 
 export default class AnimateCC extends React.Component {
+  static hexToRgba = (color, opacity) => {
+    const r = parseInt(color.substring(1, 3), 16);
+    const g = parseInt(color.substring(3, 5), 16);
+    const b = parseInt(color.substring(5, 7), 16);
+
+    return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+  }
+
   static propTypes = {
     animationName: PropTypes.string.isRequired,
     composition: PropTypes.string,
@@ -16,14 +24,6 @@ export default class AnimateCC extends React.Component {
     composition: null,
     paused: false,
     style: {},
-  }
-
-  static hexToRgba = (color, opacity) => {
-    const r = parseInt(color.substring(1, 3), 16);
-    const g = parseInt(color.substring(3, 5), 16);
-    const b = parseInt(color.substring(5, 7), 16);
-
-    return `rgba(${r}, ${g}, ${b}, ${opacity})`;
   }
 
   constructor() {
