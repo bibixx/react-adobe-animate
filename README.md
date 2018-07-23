@@ -1,8 +1,8 @@
 # Adobe Animate React component
-[![npm](https://img.shields.io/npm/dt/react-adobe-animate.svg)
-![npm](https://img.shields.io/npm/v/react-adobe-animate.svg)](https://www.npmjs.com/package/react-adobe-animate)
 
-
+[![npm](https://img.shields.io/npm/dt/react-adobe-animate.svg)](https://www.npmjs.com/package/react-adobe-animate)
+[![npm](https://img.shields.io/npm/v/react-adobe-animate.svg)](https://www.npmjs.com/package/react-adobe-animate)
+[![david-dm.org](https://david-dm.org/bibixx/react-adobe-animate/status.svg)](https://david-dm.org/bibixx/react-adobe-animate)
 
 The component helps to embed animations from Adobe Animate.
 
@@ -65,7 +65,7 @@ All other props will be passed to div surrounding canvas
 
 #### How do I insert animations published from the same file?
 
-Unfortunately it isn't possible to export from Adobe Animate two unique animations. However you can make one! Simply replace all occurances of composition id inside your .js file of an animation to one created by you. Composition id is this long string on line 24: `var comp=AdobeAn.getComposition("C1475B64B160904BB90B34246A5FF54B");` in .html file. (P.S. Also make sure that file names of published animations are unique)
+Unfortunately it isn't possible to export from Adobe Animate two unique animations. However you can make one! Simply replace all occurrences of composition id inside your .js file of an animation to one created by you. Composition id is this long string on line 24: `var comp=AdobeAn.getComposition("C1475B64B160904BB90B34246A5FF54B");` in .html file. (P.S. Also make sure that file names of published animations are unique)
 
 ### Example
 
