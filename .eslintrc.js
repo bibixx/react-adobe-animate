@@ -28,6 +28,7 @@ module.exports = {
     "react/no-did-mount-set-state": 0,
     "no-sequences": 0,
 
+    "eol-last": ["error", "always"],
     "no-return-assign": 0,
     "function-paren-newline": 0,
     "func-names": 0,
@@ -35,7 +36,6 @@ module.exports = {
     "quotes": ["error", "double"],
     "no-console": 0,
     "prefer-template": "warn",
-    "eol-last": 0,
     "quote-props": ["error", "as-needed"],
     "indent": ["error", 2, { "SwitchCase": 1, "MemberExpression": 1 }],
     "no-plusplus": 0,

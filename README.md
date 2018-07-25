@@ -1,8 +1,8 @@
 # Adobe Animate React component
 
-[![npm](https://img.shields.io/npm/dt/react-adobe-animate.svg)](https://www.npmjs.com/package/react-adobe-animate)
-[![npm](https://img.shields.io/npm/v/react-adobe-animate.svg)](https://www.npmjs.com/package/react-adobe-animate)
-[![david-dm.org](https://david-dm.org/bibixx/react-adobe-animate/status.svg)](https://david-dm.org/bibixx/react-adobe-animate)
+[![npm](https://badgen.net/npm/dt/react-adobe-animate)](https://www.npmjs.com/package/react-adobe-animate)
+![CircleCI branch](https://badgen.net/circleci/github/bibixx/react-adobe-animate/master)
+[![david-dm.org](https://badgen.net/david/dep/bibixx/react-adobe-animate)](https://david-dm.org/bibixx/react-adobe-animate)
 
 The component helps to embed animations from Adobe Animate.
 
