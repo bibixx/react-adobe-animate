@@ -36,19 +36,23 @@ export default class AnimateCC extends React.Component {
   }
 
   componentDidMount() {
+    const {
+      animationName, getAnimationObject, paused, composition,
+    } = this.props;
+
     try {
       init(
-        this.props.animationName,
+        animationName,
         this.canvas,
         this.animationContainer,
         this.domOverlayContainer,
         (l) => {
-          this.props.getAnimationObject(l);
+          getAnimationObject(l);
           this.lib = l;
-          this.lib.tickEnabled = !this.props.paused;
+          this.lib.tickEnabled = !paused;
         },
         properties => (this.setState({ properties })),
-        this.props.composition,
+        composition,
       );
     } catch (e) {
       if (e.name === "AnimateCC") {
@@ -64,13 +68,15 @@ export default class AnimateCC extends React.Component {
   }
 
   componentWillReceiveProps({ paused }) {
-    if (!this.state.error) {
+    const { error } = this.state;
+    if (!error) {
       this.lib.tickEnabled = !paused;
     }
   }
 
   componentWillUnmount() {
-    if (!this.state.error) {
+    const { error } = this.state;
+    if (!error) {
       this.lib.visible = false;
     }
   }
