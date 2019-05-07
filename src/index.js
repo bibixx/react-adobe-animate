@@ -29,6 +29,19 @@ export default class AnimateCC extends React.Component {
     style: {},
   }
 
+  dimensions = {
+    // config
+    isResp: false,
+    respDim: "both",
+    isScale: false,
+    scaleType: 1,
+
+    // init values
+    lastW: 1,
+    lastH: 1,
+    lastS: 1,
+  }
+
   constructor() {
     super();
 
@@ -57,13 +70,18 @@ export default class AnimateCC extends React.Component {
   }
 
   componentDidUpdate() {
-    if (!this.state.error) {
-      this.lib.tickEnabled = !this.props.paused;
+    const { error } = this.state;
+    const { paused } = this.props;
+
+    if (!error) {
+      this.lib.tickEnabled = !paused;
     }
   }
 
   componentWillUnmount() {
-    if (!this.state.error) {
+    const { error } = this.state;
+
+    if (!error) {
       window.removeEventListener("resize", this.resizeCanvas);
       this.stopAnimation();
     }
@@ -76,8 +94,10 @@ export default class AnimateCC extends React.Component {
   }
 
   getComposition = (searchedName) => {
-    if (this.props.composition !== null) {
-      return this.props.composition;
+    const { composition } = this.props;
+
+    if (composition !== null) {
+      return composition;
     }
 
     const compositionIds = Object.keys(AdobeAn.compositions);
@@ -87,9 +107,9 @@ export default class AnimateCC extends React.Component {
       const props = Object.keys(library);
 
       const independent = props.filter((prop) => {
-        if (library[prop].prototype &&
-            library[prop].prototype.mode &&
-            library[prop].prototype.mode === "independent") {
+        if (library[prop].prototype
+            && library[prop].prototype.mode
+            && library[prop].prototype.mode === "independent") {
           return true;
         }
 
@@ -114,7 +134,9 @@ export default class AnimateCC extends React.Component {
   }
 
   initAdobeAn = () => {
-    const fileName = this.props.animationName;
+    const { animationName, getAnimationObject, paused } = this.props;
+
+    const fileName = animationName;
     const composition = this.getComposition(fileName);
 
     let lib;
@@ -133,9 +155,9 @@ export default class AnimateCC extends React.Component {
 
     const exportRoot = new lib[fileName]();
 
-    this.props.getAnimationObject(exportRoot);
+    getAnimationObject(exportRoot);
     this.lib = exportRoot;
-    this.lib.tickEnabled = !this.props.paused;
+    this.lib.tickEnabled = !paused;
 
     const stage = new lib.Stage(this.canvas);
 
@@ -157,19 +179,6 @@ export default class AnimateCC extends React.Component {
   // Unregisters the "tick" event listener.
   stopAnimation = () => {
     CreateJs.Ticker.removeEventListener("tick", this.stage);
-  }
-
-  dimensions = {
-    // config
-    isResp: false,
-    respDim: "both",
-    isScale: false,
-    scaleType: 1,
-
-    // init values
-    lastW: 1,
-    lastH: 1,
-    lastS: 1,
   }
 
   // Code to support hidpi screens and responsive scaling.
