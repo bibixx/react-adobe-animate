@@ -56,12 +56,12 @@ workflows:
 
   build:
     jobs:
-      - test-version
+      - test
+      - test-version:
           filters:
             branches:
               only:
                 - master
-      - test
       - build:
           requires:
             - test-version
