@@ -1,6 +1,6 @@
 {
   "name": "react-adobe-animate",
-  "version": "2.1.5",
+  "version": "2.1.6",
   "description": "React component that helps embed Adobe Animate's animations into your project.",
   "main": "build/index.js",
   "scripts": {
