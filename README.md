@@ -1,6 +1,7 @@
 # Adobe Animate React component
 
 [![npm](https://badgen.net/npm/dt/react-adobe-animate)](https://www.npmjs.com/package/react-adobe-animate)
+[![npm](https://badgen.net/npm/dm/react-adobe-animate)](https://www.npmjs.com/package/react-adobe-animate)
 ![CircleCI branch](https://badgen.net/circleci/github/bibixx/react-adobe-animate/master)
 [![david-dm.org](https://badgen.net/david/dep/bibixx/react-adobe-animate)](https://david-dm.org/bibixx/react-adobe-animate)
 
