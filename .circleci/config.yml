@@ -1,71 +1,42 @@
 version: 2
 jobs:
-  build:
+  build-and-publish:
     docker:
-      - image: circleci/node:carbon
-
+      - image: 'circleci/node:latest'
     steps:
       - checkout
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-          - v1-dependencies-
       - run:
-          name: "Install dependencies"
-          command: yarn install
+          name: Install dependencies
+          command: npm ci
       - run:
-          name: "Build project"
-          command: yarn build
+          name: Build project
+          command: npm run build
       - run:
-          name: "Set up npm auth token"
-          command: echo //registry.npmjs.org/:_authToken=$NPM_TOKEN > ~/.npmrc
-      - run:
-          name: "Deploy image to npm"
-          command: npm publish
+          name: Release to npm
+          command: npm run semantic-release || true
 
-  test:
+  lint:
     docker:
-      - image: circleci/node:carbon
+      - image: 'circleci/node:latest'
     steps:
       - checkout
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-          - v1-dependencies-
       - run:
-          name: "Install dependencies"
-          command: yarn install
+          name: Install dependencies
+          command: npm ci
       - run:
           name: Run eslint
-          command: yarn lint
-      # - run:
-      #     name: Run test
-      #     command: yarn test
+          command: npm run lint
 
-  test-version:
-    docker:
-      - image: circleci/node:carbon
-    steps:
-      - checkout
-      - run:
-          name: Run version test
-          command: yarn test:version
 
 workflows:
   version: 2
 
-  build:
+  build-and-publish:
     jobs:
-      - test
-      - test-version:
-          filters:
-            branches:
-              only:
-                - master
-      - build:
+      - lint
+      - build-and-publish:
           requires:
-            - test-version
-            - test
+            - lint
           filters:
             branches:
               only:
