@@ -134,18 +134,18 @@ export default class AnimateCC extends React.Component {
   }
 
   initAdobeAn = () => {
-    const { animationName, getAnimationObject, paused } = this.props;
+    const { animationName } = this.props;
 
-    const fileName = animationName;
-    const composition = this.getComposition(fileName);
+    const composition = this.getComposition(animationName);
 
     let lib;
+    let comp;
     try {
-      const comp = AdobeAn.getComposition(composition);
+      comp = AdobeAn.getComposition(composition);
       lib = comp.getLibrary();
     } catch (e) {
       if (e.message === "Cannot read property 'getLibrary' of undefined") {
-        const err = new Error(`Animation with name ${fileName} was not found`, "test");
+        const err = new Error(`Animation with name ${animationName} was not found`, "test");
         err.name = "AnimateCC";
         throw err;
       }
@@ -153,9 +153,36 @@ export default class AnimateCC extends React.Component {
       throw e;
     }
 
-    const exportRoot = new lib[fileName]();
+    const loader = new CreateJs.LoadQueue(false);
+    loader.addEventListener("fileload", (evt) => { this.handleFileLoad(evt, comp); });
+    loader.addEventListener("complete", (evt) => { this.handleComplete(evt, comp); });
+    lib = comp.getLibrary();
+    loader.loadManifest(lib.properties.manifest);
 
-    getAnimationObject(exportRoot);
+    if (lib.properties.manifest.filter(({ type }) => type === "image").length === 0) {
+      this.handleComplete(null, comp);
+    }
+  }
+
+  handleComplete = (evt, comp) => {
+    const { animationName, paused } = this.props;
+
+    const lib = comp.getLibrary();
+
+    if (evt) {
+      const ss = comp.getSpriteSheet();
+      const queue = evt.target;
+      const { ssMetadata } = lib;
+      for (let i = 0; i < ssMetadata.length; i++) {
+        ss[ssMetadata[i].name] = new CreateJs.SpriteSheet({
+          images: [queue.getResult(ssMetadata[i].name)],
+          frames: ssMetadata[i].frames,
+        });
+      }
+    }
+
+    const exportRoot = new lib[animationName]();
+
     this.lib = exportRoot;
     this.lib.tickEnabled = !paused;
 
@@ -163,6 +190,11 @@ export default class AnimateCC extends React.Component {
 
     this.stage = stage;
     this.setState({ properties: lib.properties }, this.onAnimationReady);
+  }
+
+  handleFileLoad = (evt, comp) => {
+    const images = comp.getImages();
+    if (evt && (evt.item.type === "image")) { images[evt.item.id] = evt.result; }
   }
 
   // Registers the "tick" event listener.
