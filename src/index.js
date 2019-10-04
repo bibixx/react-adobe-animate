@@ -165,7 +165,7 @@ export default class AnimateCC extends React.Component {
   }
 
   handleComplete = (evt, comp) => {
-    const { animationName, paused } = this.props;
+    const { animationName, paused, getAnimationObject } = this.props;
 
     const lib = comp.getLibrary();
 
@@ -182,6 +182,7 @@ export default class AnimateCC extends React.Component {
     }
 
     const exportRoot = new lib[animationName]();
+    getAnimationObject(exportRoot);
 
     this.lib = exportRoot;
     this.lib.tickEnabled = !paused;
