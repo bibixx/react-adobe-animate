@@ -73,7 +73,7 @@ export default class AnimateCC extends React.Component {
     const { error } = this.state;
     const { paused } = this.props;
 
-    if (!error && this.lib !== undefined) {
+    if (!error) {
       this.lib.tickEnabled = !paused;
     }
   }
