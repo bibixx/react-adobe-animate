@@ -80,11 +80,19 @@ export default class AnimateCC extends React.Component {
 
   componentWillUnmount() {
     const { error } = this.state;
-
-    if (!error) {
-      window.removeEventListener("resize", this.resizeCanvas);
-      this.stopAnimation();
+    if (error) {
+      return;
     }
+
+    // Force garbage collection on Safari
+    // https://bugs.webkit.org/show_bug.cgi?id=195325
+    if (this.canvas) {
+      this.canvas.height = 0;
+      this.canvas.width = 0;
+    }
+
+    window.removeEventListener("resize", this.resizeCanvas);
+    this.stopAnimation();
   }
 
   onAnimationReady = () => {
