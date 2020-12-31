@@ -20,13 +20,6 @@ export class AnimateCC extends React.Component<Props, State> {
 
   private canvasRef = React.createRef<HTMLCanvasElement>();
 
-  static defaultProps = {
-    getAnimationObject: () => {},
-    composition: null,
-    paused: false,
-    style: {},
-  };
-
   state: State = {
     error: false,
   };
