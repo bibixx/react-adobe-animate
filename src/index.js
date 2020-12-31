@@ -1,4 +1,3 @@
-// eslint-disable-next-line max-classes-per-file
 import React from "react";
 import PropTypes from "prop-types";
 
@@ -6,20 +5,8 @@ import PropTypes from "prop-types";
 let AdobeAn;
 let CreateJs;
 
-class AnimateCCError extends Error {
-  name = "AnimateCCError";
-
-  constructor(animationName) {
-    super(`Animation with name ${animationName} was not found`);
-    this.constructor = AnimateCCError;
-    // eslint-disable-next-line no-proto
-    this.__proto__ = AnimateCCError.prototype;
-
-    this.animationName = animationName;
-  }
-}
-
-export default class AnimateCC extends React.Component {
+// eslint-disable-next-line import/prefer-default-export
+export class AnimateCC extends React.Component {
   static hexToRgba = (color, opacity) => {
     const r = parseInt(color.substring(1, 3), 16);
     const g = parseInt(color.substring(3, 5), 16);
@@ -71,9 +58,8 @@ export default class AnimateCC extends React.Component {
     try {
       this.initAdobeAn();
     } catch (e) {
-      if (e instanceof AnimateCCError) {
+      if (e.name === "AnimateCC") {
         console.error(`AnimateCC: ${e.message}`);
-        window.error = e;
       } else {
         throw e;
       }
@@ -139,7 +125,6 @@ export default class AnimateCC extends React.Component {
         return false;
       });
 
-
       return independent.filter(name => name === searchedName).length > 0;
     });
 
@@ -162,17 +147,25 @@ export default class AnimateCC extends React.Component {
 
     const composition = this.getComposition(animationName);
 
-    if (composition === undefined) {
-      throw new AnimateCCError(animationName);
-    }
+    let lib;
+    let comp;
+    try {
+      comp = AdobeAn.getComposition(composition);
+      lib = comp.getLibrary();
+    } catch (e) {
+      if (e.message === "Cannot read property 'getLibrary' of undefined") {
+        const err = new Error(`Animation with name ${animationName} was not found`, "test");
+        err.name = "AnimateCC";
+        throw err;
+      }
 
-    const comp = AdobeAn.getComposition(composition);
-    const lib = comp.getLibrary();
-    console.log(lib);
+      throw e;
+    }
 
     const loader = new CreateJs.LoadQueue(false);
     loader.addEventListener("fileload", evt => { this.handleFileLoad(evt, comp); });
     loader.addEventListener("complete", evt => { this.handleComplete(evt, comp); });
+    lib = comp.getLibrary();
     loader.loadManifest(lib.properties.manifest);
 
     if (lib.properties.manifest.filter(({ type }) => type === "image").length === 0) {

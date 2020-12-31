@@ -1,6 +1,7 @@
-/* eslint-disable spaced-comment */
+/* eslint-disable */
 // /*
-export { default } from "./components/AnimateCC";
+export { AnimateCC as default } from "./AnimateCC";
 /*/
-export { default } from "./index.js";
+// @ts-ignore
+export { AnimateCC as default } from "./index.js";
 ///*/
