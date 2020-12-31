@@ -1,74 +1,22 @@
 import React from 'react';
 import type createjs from 'createjs-module';
+import { AdobeAn, Composition } from '../utils/AdobeAn';
+import { CreateJS } from '../utils/CreateJS';
+
 import { hexToRgba } from '../utils/hexToRgba';
-import { checkLibs } from '../utils/checkLibs';
+import { getCompositionId } from '../utils/getCompositionId';
+import { log } from '../utils/log';
 
-type CreateJS = typeof createjs;
-type Stage = typeof createjs.Stage;
-
-type Properties = {
-  color: string
-  fps: number
-  id: string
-  manifest: [{ type: string }]
-  opacity: number
-  preloads: []
-  width: number
-  height: number
-};
-
-type Metadata = {
-  name: string
-  frames: any
-};
-
-type Library = {
-  properties: Properties
-  Stage: Stage
-  ssMetadata: Metadata[]
-} & {
-  [id: string]: typeof createjs.DisplayObject
-};
-
-type CompositionLib = createjs.DisplayObject;
-
-type Composition = {
-  getLibrary: () => Library,
-  getSpriteSheet: () => Record<string, createjs.SpriteSheet>,
-  getImages: () => any
-};
-
-interface An {
-  compositions: {
-    [id: string]: Composition
-  };
-  getComposition: (id: string) => Composition | undefined
-  compositionLoaded: (id: string) => void
-}
-
-export type Props = {
-  animationName: string,
-  composition?: string,
-  getAnimationObject?: (object: createjs.DisplayObject) => void,
-  paused?: boolean,
-  style?: React.CSSProperties,
-};
-
-export type State = {
-  properties?: Properties,
-  error: boolean,
-};
-
-// Libs are instantiated below in loadLibs
-const AdobeAn = (window as any).AdobeAn as An;
-const CreateJs = window.createjs as CreateJS;
+import {
+  AnimationObject,
+  Props,
+  State,
+} from './types';
 
 export class AnimateCC extends React.Component<Props, State> {
-  private compositionLib?: CompositionLib;
+  private animationObject?: AnimationObject;
 
   private stage?: createjs.Stage;
-
-  private lastS = 0;
 
   private canvasRef = React.createRef<HTMLCanvasElement>();
 
@@ -79,47 +27,38 @@ export class AnimateCC extends React.Component<Props, State> {
     style: {},
   };
 
-  dimensions = {
-    // config
-    isResp: false,
-    respDim: 'both',
-    isScale: false,
-    scaleType: 1,
-
-    // init values
-    lastW: 1,
-    lastH: 1,
-    lastS: 1,
-  };
-
   state: State = {
     error: false,
   };
 
   componentDidMount() {
-    checkLibs(AdobeAn, CreateJs);
+    const { animationName, composition: externalCompositionId } = this.props;
 
-    const { animationName } = this.props;
+    const compositionId = getCompositionId(animationName, externalCompositionId);
 
-    const composition = this.getCompositionId(animationName);
-
-    const comp = AdobeAn.getComposition(composition);
-
-    if (comp === undefined) {
-      console.error(`AnimateCC: Animation with name ${animationName} was not found`);
+    if (compositionId === null) {
+      log(`${externalCompositionId} composition was not found in ${animationName} animation`);
       this.setState({ error: true });
       return;
     }
 
-    const lib = comp.getLibrary();
+    const composition = AdobeAn.getComposition(compositionId);
 
-    const loader = new CreateJs.LoadQueue(false);
-    loader.addEventListener('fileload', (evt) => { this.handleFileLoad(evt as createjs.Event, comp); });
-    loader.addEventListener('complete', (evt) => { this.handleComplete(evt as createjs.Event, comp); });
-    loader.loadManifest(lib.properties.manifest);
+    if (composition === undefined) {
+      log(`Animation with name ${animationName} was not found`);
+      this.setState({ error: true });
+      return;
+    }
 
-    if (lib.properties.manifest.filter(({ type }) => type === 'image').length === 0) {
-      this.handleComplete(null, comp);
+    const { properties: { manifest } } = composition.getLibrary();
+
+    const loader = new CreateJS.LoadQueue(false);
+    loader.addEventListener('fileload', (evt) => { this.handleFileLoad(evt as createjs.Event, composition); });
+    loader.addEventListener('complete', (evt) => { this.handleComplete(evt as createjs.Event, composition); });
+    loader.loadManifest(manifest);
+
+    if (manifest.filter(({ type }) => type === 'image').length === 0) {
+      this.handleComplete(null, composition);
     }
   }
 
@@ -127,8 +66,8 @@ export class AnimateCC extends React.Component<Props, State> {
     const { error } = this.state;
     const { paused } = this.props;
 
-    if (!error && this.compositionLib !== undefined) {
-      this.compositionLib.tickEnabled = !paused;
+    if (!error && this.animationObject !== undefined) {
+      this.animationObject.tickEnabled = !paused;
     }
   }
 
@@ -145,143 +84,100 @@ export class AnimateCC extends React.Component<Props, State> {
       this.canvasRef.current.width = 0;
     }
 
-    window.removeEventListener('resize', this.resizeCanvas);
     this.stopAnimation();
   }
 
-  onAnimationReady = () => {
-    window.addEventListener('resize', this.resizeCanvas);
+  private onAnimationReady = () => {
     this.resizeCanvas();
     this.startAnimation();
   };
 
-  getCompositionId = (searchedName: string): string => {
-    const { composition } = this.props;
+  private handleComplete = (evt: createjs.Event|null, composition: Composition) => {
+    const {
+      animationName, paused, getAnimationObject,
+    } = this.props;
 
-    if (composition) {
-      return composition;
-    }
-
-    const compositionIds = Object.keys(AdobeAn.compositions);
-
-    const [foundComposition] = compositionIds.filter((id) => {
-      const library = (AdobeAn.compositions[id].getLibrary() as any) as {
-        [id: string]: { prototype?: { mode?: string } }
-      };
-      const props = Object.keys(library);
-
-      const independent = props.filter((prop) => {
-        if (library?.[prop]?.prototype?.mode === 'independent') {
-          return true;
-        }
-
-        return false;
-      });
-
-      return independent.some((name) => name === searchedName);
-    });
-
-    return foundComposition;
-  };
-
-  handleComplete = (evt: createjs.Event|null, comp: Composition) => {
-    const { animationName, paused, getAnimationObject } = this.props;
-
-    const lib = comp.getLibrary();
+    const lib = composition.getLibrary();
 
     if (evt !== null) {
-      const ss = comp.getSpriteSheet();
+      const ss = composition.getSpriteSheet();
+
       const queue = evt.target;
-      const { ssMetadata } = lib;
+      const { ssMetadata = [] } = lib;
 
       for (const metadata of ssMetadata) {
-        ss[metadata.name] = new CreateJs.SpriteSheet({
-          images: [queue.getResult(metadata.name)],
-          frames: metadata.frames,
-        });
+        if (metadata) {
+          ss[metadata.name] = new CreateJS.SpriteSheet({
+            images: [queue?.getResult(metadata.name)],
+            frames: metadata.frames,
+          });
+        }
       }
     }
 
-    const exportRoot = new lib[animationName]();
-    getAnimationObject?.(exportRoot);
+    const animationObject = new lib[animationName]();
+    getAnimationObject?.(animationObject);
 
-    this.compositionLib = exportRoot;
-    this.compositionLib.tickEnabled = !paused;
+    this.animationObject = animationObject;
+    this.animationObject.tickEnabled = !paused;
 
     if (this.canvasRef.current) {
-      const stage = new lib.Stage(this.canvasRef.current);
-
-      this.stage = stage;
+      this.stage = new lib.Stage(this.canvasRef.current);
       this.setState({ properties: lib.properties }, this.onAnimationReady);
     }
   };
 
-  handleFileLoad = (evt: createjs.Event, comp: Composition) => {
+  private handleFileLoad = (evt: createjs.Event, comp: Composition) => {
     const images = comp.getImages();
-
     if (evt?.item?.type === 'image') {
       images[evt.item.id] = evt.result;
     }
   };
 
   // Registers the "tick" event listener.
-  startAnimation = () => {
+  private startAnimation = () => {
     const { properties } = this.state;
 
     if (properties !== undefined) {
       AdobeAn.compositionLoaded(properties.id);
     }
 
-    if (this.compositionLib !== undefined) {
-      this.stage?.addChild(this.compositionLib);
+    if (this.animationObject !== undefined) {
+      this.stage?.addChild(this.animationObject);
     }
 
     if (properties !== undefined && this.stage !== undefined) {
-      CreateJs.Ticker.framerate = properties.fps;
-      CreateJs.Ticker.addEventListener('tick', this.stage);
+      CreateJS.Ticker.framerate = properties.fps;
+      CreateJS.Ticker.addEventListener('tick', this.stage);
     }
   };
 
   // Unregisters the "tick" event listener.
-  stopAnimation = () => {
+  private stopAnimation = () => {
     if (this.stage !== undefined) {
-      CreateJs.Ticker.removeEventListener('tick', this.stage as any as Function);
+      CreateJS.Ticker.removeEventListener('tick', this.stage as any as Function);
     }
   };
 
-  // Code to support hidpi screens and responsive scaling.
-  resizeCanvas = () => {
+  private getCanvasSize = () => {
     const { properties } = this.state;
-    const w = properties?.width ?? 1;
-    const h = properties?.height ?? 1;
-    const iw = window.innerWidth;
-    const ih = window.innerHeight;
-    const pRatio = window.devicePixelRatio || 1;
-    const xRatio = iw / w;
-    const yRatio = ih / h;
-    let sRatio = 1;
-    const dim = this.dimensions;
+    const width = properties?.width ?? 1;
+    const height = properties?.height ?? 1;
+    const pRatio = window.devicePixelRatio;
 
-    if (dim.isResp) {
-      if ((dim.respDim === 'width' && dim.lastW === iw) || (dim.respDim === 'height' && dim.lastH === ih)) {
-        sRatio = this.lastS;
-      } else if (!dim.isScale) {
-        if (iw < w || ih < h) { sRatio = Math.min(xRatio, yRatio); }
-      } else if (dim.scaleType === 1) {
-        sRatio = Math.min(xRatio, yRatio);
-      } else if (dim.scaleType === 2) {
-        sRatio = Math.max(xRatio, yRatio);
-      }
-    }
+    return {
+      width: width * pRatio,
+      height: height * pRatio,
+    };
+  };
 
-    if (this.canvasRef.current !== null) {
-      this.canvasRef.current.width = w * pRatio * sRatio;
-      this.canvasRef.current.height = h * pRatio * sRatio;
-    }
+  // Code to support hidpi screens and responsive scaling.
+  private resizeCanvas = () => {
+    const pRatio = window.devicePixelRatio;
 
     if (this.stage !== undefined) {
-      this.stage.scaleX = pRatio * sRatio;
-      this.stage.scaleY = pRatio * sRatio;
+      this.stage.scaleX = pRatio;
+      this.stage.scaleY = pRatio;
       this.stage.tickOnUpdate = false;
       this.stage.update();
       this.stage.tickOnUpdate = true;
@@ -294,10 +190,12 @@ export class AnimateCC extends React.Component<Props, State> {
       getAnimationObject,
       paused,
       style: additionalStyles,
+      composition,
       ...props
     } = this.props;
 
     const { properties } = this.state;
+    const { width: canvasWidth, height: canvasHeight } = this.getCanvasSize();
 
     if (properties === undefined || Object.keys(properties).length === 0) {
       return (
@@ -325,6 +223,8 @@ export class AnimateCC extends React.Component<Props, State> {
         >
           <canvas
             ref={this.canvasRef}
+            width={canvasWidth}
+            height={canvasHeight}
             style={{
               display: 'block',
               width: '100%',
