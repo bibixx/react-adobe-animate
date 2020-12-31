@@ -1,23 +1,9 @@
-// eslint-disable-next-line max-classes-per-file
 import React from "react";
 import PropTypes from "prop-types";
 
 // Libs are instanciated below in loadLibs
 let AdobeAn;
 let CreateJs;
-
-class AnimateCCError extends Error {
-  name = "AnimateCCError";
-
-  constructor(animationName) {
-    super(`Animation with name ${animationName} was not found`);
-    this.constructor = AnimateCCError;
-    // eslint-disable-next-line no-proto
-    this.__proto__ = AnimateCCError.prototype;
-
-    this.animationName = animationName;
-  }
-}
 
 export default class AnimateCC extends React.Component {
   static hexToRgba = (color, opacity) => {
@@ -71,9 +57,8 @@ export default class AnimateCC extends React.Component {
     try {
       this.initAdobeAn();
     } catch (e) {
-      if (e instanceof AnimateCCError) {
+      if (e.name === "AnimateCC") {
         console.error(`AnimateCC: ${e.message}`);
-        window.error = e;
       } else {
         throw e;
       }
@@ -88,26 +73,18 @@ export default class AnimateCC extends React.Component {
     const { error } = this.state;
     const { paused } = this.props;
 
-    if (!error && this.lib !== undefined) {
+    if (!error) {
       this.lib.tickEnabled = !paused;
     }
   }
 
   componentWillUnmount() {
     const { error } = this.state;
-    if (error) {
-      return;
-    }
 
-    // Force garbage collection on Safari
-    // https://bugs.webkit.org/show_bug.cgi?id=195325
-    if (this.canvas) {
-      this.canvas.height = 0;
-      this.canvas.width = 0;
+    if (!error) {
+      window.removeEventListener("resize", this.resizeCanvas);
+      this.stopAnimation();
     }
-
-    window.removeEventListener("resize", this.resizeCanvas);
-    this.stopAnimation();
   }
 
   onAnimationReady = () => {
@@ -139,7 +116,6 @@ export default class AnimateCC extends React.Component {
         return false;
       });
 
-
       return independent.filter(name => name === searchedName).length > 0;
     });
 
@@ -162,17 +138,25 @@ export default class AnimateCC extends React.Component {
 
     const composition = this.getComposition(animationName);
 
-    if (composition === undefined) {
-      throw new AnimateCCError(animationName);
-    }
+    let lib;
+    let comp;
+    try {
+      comp = AdobeAn.getComposition(composition);
+      lib = comp.getLibrary();
+    } catch (e) {
+      if (e.message === "Cannot read property 'getLibrary' of undefined") {
+        const err = new Error(`Animation with name ${animationName} was not found`, "test");
+        err.name = "AnimateCC";
+        throw err;
+      }
 
-    const comp = AdobeAn.getComposition(composition);
-    const lib = comp.getLibrary();
-    console.log(lib);
+      throw e;
+    }
 
     const loader = new CreateJs.LoadQueue(false);
     loader.addEventListener("fileload", evt => { this.handleFileLoad(evt, comp); });
     loader.addEventListener("complete", evt => { this.handleComplete(evt, comp); });
+    lib = comp.getLibrary();
     loader.loadManifest(lib.properties.manifest);
 
     if (lib.properties.manifest.filter(({ type }) => type === "image").length === 0) {
