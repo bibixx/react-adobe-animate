@@ -2,8 +2,8 @@
 
 [![npm](https://badgen.net/npm/v/react-adobe-animate)](https://www.npmjs.com/package/react-adobe-animate)
 [![npm](https://badgen.net/npm/dt/react-adobe-animate)](https://www.npmjs.com/package/react-adobe-animate)
-[![Snyk Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/bibixx/react-adobe-animate)](https://snyk.io/test/github/bibixx/react-adobe-animate)
 [![npm](https://badgen.net/npm/dm/react-adobe-animate)](https://www.npmjs.com/package/react-adobe-animate)
+[![Snyk Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/bibixx/react-adobe-animate)](https://snyk.io/test/github/bibixx/react-adobe-animate)
 ![CircleCI branch](https://badgen.net/circleci/github/bibixx/react-adobe-animate/master)
 [![david-dm.org](https://badgen.net/david/dep/bibixx/react-adobe-animate)](https://david-dm.org/bibixx/react-adobe-animate)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
@@ -17,12 +17,12 @@
 
 ## Examples
 
-* [Simple implementation (codesandbox.io)](https://codesandbox.io/s/react-adobe-animate-zw61y)
+* [Simple implementation (codesandbox.io)](https://githubbox.com/bibixx/react-adobe-animate/tree/master/examples)
 
 ## Dependencies
 
 * React
-* CreateJS – add this to your page `<script src="https://code.createjs.com/createjs-2015.11.26.min.js"></script>`
+* CreateJS – add this to your page `<script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>`
 * Your animation – add .js file exported from Adobe Animate to page with `<script>` tag
 
 ## How to use
@@ -36,7 +36,7 @@
   </head>
   <body>
     <div id="root"></div>
-    <script src="https://code.createjs.com/createjs-2015.11.26.min.js" type="text/javascript"></script>
+    <script src="https://code.createjs.com/1.0.0/createjs.min.js" type="text/javascript"></script>
     <script src="./lishtml5-with-background.js" type="text/javascript"></script>
     <script src="./lishtml5.js" type="text/javascript"></script>
   </body>
@@ -44,16 +44,17 @@
 
 ```
 
-#### App.js
-```jsx
-import React, { useState } from "react";
-import AnimateCC from "react-adobe-animate";
+#### App.tsx
+```tsx
+import { useState } from "react";
+import AnimateCC, { GetAnimationObjectParameter } from "react-adobe-animate";
 
 const App = () => {
-  const [paused, setPaused] = useState(false);
-  const [, setAnimationObject] = useState(null);
-  const getAnimationObject = obj => setAnimationObject(obj);
+  const [paused, setPaused] = useState(true);
+  const [animationObject, getAnimationObject] = useState<GetAnimationObjectParameter|null>(null);
   const onClick = () => setPaused(!paused);
+
+  console.log(animationObject);
 
   return (
     <div style={{ width: "400px" }}>
@@ -69,7 +70,7 @@ const App = () => {
         paused={paused}
       />
 
-      <button onClick={onClick}>{paused ? "Unpause" : "Pause"}</button>
+      <button onClick={onClick}>{paused ? "Unpause" : "Pause"}</button><br />
     </div>
   );
 };
@@ -94,7 +95,11 @@ Unfortunately it isn't possible to export from Adobe Animate two unique animatio
 
 ## 🤝 Contributing
 
-Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/bibixx/react-adobe-animate/issues).
+Contributions, issues and feature requests are welcome!\
+Feel free to check [issues page](https://github.com/bibixx/react-adobe-animate/issues).
+
+For development purposes you can use the `example` folder. \
+You'll find instructions on how to use it in [`example/README.md`](https://github.com/bibixx/react-adobe-animate/blob/master/example/README.md)
 
 ## Show your support
 
@@ -102,5 +107,5 @@ Give a ⭐️ if this project helped you!
 
 ## 📝 License
 
-Copyright © 2019 [bibixx <bartosz@legiec.eu>](https://github.com/bibixx).<br />
-This project is [MIT](https://github.com/bibixx/react-adobe-animate/blob/master/LICENSE) licensed.
+Copyright © 2019-2020 [bibixx](https://github.com/bibixx) <bartosz+a.github@legiec.io>.<br />
+This project is [MIT](https://github.com/bibixx/react-adobe-animate/blob/master/LICENSE.md) licensed.
