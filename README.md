@@ -15,7 +15,7 @@
 
 ## Examples
 
-* [Simple implementation (codesandbox.io)](https://githubbox.com/bibixx/react-adobe-animate/tree/master/examples)
+* [Simple implementation (codesandbox.io)](https://githubbox.com/bibixx/react-adobe-animate/tree/master/example)
 
 ## Dependencies
 
