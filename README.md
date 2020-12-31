@@ -17,7 +17,7 @@
 
 ## Examples
 
-* [Simple implementation (codesandbox.io)](https://codesandbox.io/s/react-adobe-animate-zw61y)
+* [Simple implementation (codesandbox.io)](https://githubbox.com/bibixx/react-adobe-animate/tree/master/examples)
 
 ## Dependencies
 
@@ -95,7 +95,11 @@ Unfortunately it isn't possible to export from Adobe Animate two unique animatio
 
 ## 🤝 Contributing
 
-Contributions, issues and feature requests are welcome!<br />Feel free to check [issues page](https://github.com/bibixx/react-adobe-animate/issues).
+Contributions, issues and feature requests are welcome!\
+Feel free to check [issues page](https://github.com/bibixx/react-adobe-animate/issues).
+
+For development purposes you can use the `example` folder. \
+You'll find instructions on how to use it in [`example/README.md`](https://github.com/bibixx/react-adobe-animate/blob/master/example/README.md)
 
 ## Show your support
 
