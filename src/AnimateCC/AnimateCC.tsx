@@ -48,6 +48,7 @@ export class AnimateCC extends React.Component<Props, State> {
     const loader = new CreateJS.LoadQueue(false);
     loader.addEventListener('fileload', (evt) => { this.handleFileLoad(evt as createjs.Event, composition); });
     loader.addEventListener('complete', (evt) => { this.handleComplete(evt as createjs.Event, composition); });
+    loader.addEventListener('error', (evt) => { this.handleFileError(evt as createjs.ErrorEvent); });
     loader.loadManifest(manifest);
 
     if (manifest.filter(({ type }) => type === 'image').length === 0) {
@@ -85,7 +86,21 @@ export class AnimateCC extends React.Component<Props, State> {
     this.startAnimation();
   };
 
+  private handleFileError = (evt: createjs.ErrorEvent) => {
+    if (evt.title === 'FILE_LOAD_ERROR') {
+      const { src } = evt.data as { src: string };
+
+      log(`Asset ${src} failed to load`);
+      this.setState({ error: true });
+    }
+  };
+
   private handleComplete = (evt: createjs.Event|null, composition: Composition) => {
+    const { error } = this.state;
+    if (error) {
+      return;
+    }
+
     const {
       animationName, paused, getAnimationObject,
     } = this.props;
