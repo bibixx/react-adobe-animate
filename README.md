@@ -74,6 +74,48 @@ const App = () => {
 };
 ```
 
+### Next.js
+To use the component with [Next.js](https://github.com/vercel/next.js/) you have to include CreateJS and Animate files (you have to put those into `public` folder first) in `Head` component.
+
+#### `pages/index.tsx`
+```tsx
+import { useState } from "react";
+import Head from 'next/head';
+import AnimateCC, { GetAnimationObjectParameter } from "react-adobe-animate";
+
+export default function Home() {
+  const [paused, setPaused] = useState(true);
+  const [animationObject, getAnimationObject] = useState<GetAnimationObjectParameter|null>(null);
+  const onClick = () => setPaused(!paused);
+
+  console.log(animationObject);
+
+  return (
+    <div style={{ width: "400px" }}>
+      <Head>
+        <script src="https://code.createjs.com/1.0.0/createjs.min.js" type="text/javascript"></script>
+        <script src="/lishtml5.js" type="text/javascript"></script>
+        <script src="/lishtml5-with-background.js" type="text/javascript"></script>
+      </Head>
+
+      <AnimateCC
+        animationName="lishtml5"
+        getAnimationObject={getAnimationObject}
+        paused={paused}
+      />
+
+      <AnimateCC
+        animationName="lishtml5"
+        composition="C1475B64B160904BB90B34246A5FF54B"
+        paused={paused}
+      />
+
+      <button onClick={onClick}>{paused ? "Unpause" : "Pause"}</button><br />
+    </div>
+  );
+}
+```
+
 ### Props
 
 | Prop name | Type | Required | Description  |
