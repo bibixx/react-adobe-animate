@@ -133,6 +133,10 @@ All other props will be passed to div surrounding canvas
 
 Unfortunately it isn't possible to export from Adobe Animate two unique animations. However you can make one! Simply replace all occurrences of composition id inside your .js file of an animation to one created by you. Composition id is this long string in `var comp=AdobeAn.getComposition("C1475B64B160904BB90B34246A5FF54B");` found in .html file published by Adobe Animate.
 
+## 🙋‍♂️ Questions
+
+Should you have any questions on how to use/setup the component feel free to ask you questions on the [discussions page](https://github.com/bibixx/react-adobe-animate/discussions).
+
 ## 🤝 Contributing
 
 Contributions, issues and feature requests are welcome!\
