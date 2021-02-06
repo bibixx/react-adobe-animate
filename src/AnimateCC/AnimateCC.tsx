@@ -25,6 +25,10 @@ export class AnimateCC extends React.Component<Props, State> {
   };
 
   componentDidMount() {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
     const { animationName, composition: externalCompositionId } = this.props;
 
     const compositionId = getCompositionId(animationName, externalCompositionId);
@@ -201,6 +205,10 @@ export class AnimateCC extends React.Component<Props, State> {
       composition,
       ...props
     } = this.props;
+
+    if (typeof window === 'undefined') {
+      return null;
+    }
 
     const { properties } = this.state;
     const { width: canvasWidth, height: canvasHeight } = this.getCanvasSize();

@@ -1,8 +1,8 @@
 import { AnimateCCError } from '../AnimateCCError';
 import { An } from './types';
 
-export const AdobeAn = (window as any).AdobeAn as An;
+export const AdobeAn = (global as any).AdobeAn as An;
 
-if (AdobeAn === undefined) {
+if (typeof window !== 'undefined' && AdobeAn === undefined) {
   throw new AnimateCCError('AdobeAn dependency not found');
 }
