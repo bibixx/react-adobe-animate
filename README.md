@@ -77,7 +77,7 @@ const App = () => {
 ### Next.js
 To use the component with [Next.js](https://github.com/vercel/next.js/) you have to include CreateJS and Animate files (you have to put those into `public` folder first) in `Head` component.
 
-#### `pages/index.tsx`
+#### pages/index.tsx
 ```tsx
 import { useState } from "react";
 import Head from 'next/head';
