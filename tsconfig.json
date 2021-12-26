@@ -20,7 +20,7 @@
     "jsx": "react",
 
     "esModuleInterop": true,
-    "allowJs": true,
+    "allowJs": false,
     "declaration": true,
     "paths" : {
       "src/*": ["./src/*"]
