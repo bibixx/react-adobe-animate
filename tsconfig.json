@@ -21,8 +21,12 @@
 
     "esModuleInterop": true,
     "allowJs": true,
-    "declaration": true
+    "declaration": true,
+    "paths" : {
+      "src/*": ["./src/*"]
+    }
   },
   "include": ["src"],
-  "exclude": ["node_modules", "build"]
+  "exclude": ["node_modules", "build"],
+  "baseUrl": "./src"
 }

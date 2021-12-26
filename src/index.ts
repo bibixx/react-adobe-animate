@@ -1,3 +1,3 @@
-// eslint-disable-next-line import/no-default-export
-export { AnimateCC as default } from './AnimateCC';
-export type { GetAnimationObjectParameter } from './AnimateCC';
+// eslint-disable-next-line no-restricted-exports
+export { AnimateCC, AnimateCC as default } from './AnimateCC/AnimateCC';
+export type { GetAnimationObjectParameter } from './AnimateCC/AnimateCC.types';

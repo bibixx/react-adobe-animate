@@ -29,6 +29,7 @@ export default {
       rollupCommonJSResolveHack: true,
       exclude: '**/__tests__/**',
       clean: true,
+      check: false,
     }),
     commonjs({
       include: ['node_modules/**'],

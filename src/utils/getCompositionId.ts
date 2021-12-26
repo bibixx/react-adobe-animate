@@ -1,32 +1,53 @@
-import { AdobeAn } from './AdobeAn';
+const getCompositionByCompositionId = (
+  searchedName: string,
+  externalCompositionId: string,
+) => {
+  if (
+    window.AdobeAn.compositions?.[externalCompositionId]?.getLibrary()[
+      searchedName
+    ]
+  ) {
+    return externalCompositionId;
+  }
 
-export const getCompositionId = (searchedName: string, composition?: string): string|null => {
-  const compositionIds = Object.keys(AdobeAn.compositions);
+  return null;
+};
 
-  if (composition) {
-    if (AdobeAn.compositions[composition].getLibrary()[searchedName]) {
-      return composition;
-    }
-
+export const getCompositionId = (
+  searchedName: string,
+  externalCompositionId?: string,
+): string | null => {
+  const { compositions } = window.AdobeAn;
+  if (compositions === undefined) {
     return null;
   }
 
-  const [foundComposition] = compositionIds.filter((id) => {
-    const library = (AdobeAn.compositions[id].getLibrary() as any) as {
-      [id: string]: { prototype?: { mode?: string } }
-    };
-    const props = Object.keys(library);
+  const compositionIds = Object.keys(compositions);
 
-    const independent = props.filter((prop) => {
-      if (library?.[prop]?.prototype?.mode === 'independent') {
-        return true;
+  if (externalCompositionId) {
+    return getCompositionByCompositionId(searchedName, externalCompositionId);
+  }
+
+  const foundComposition = compositionIds.find((id) => {
+    const library = compositions[id]?.getLibrary();
+
+    if (!library) {
+      return false;
+    }
+
+    const symbolNames = Object.keys(library);
+
+    return symbolNames.some((symbolName) => {
+      const symbol = library[symbolName];
+      const symbolPrototype = symbol.prototype as { mode?: string } | undefined;
+
+      if (symbolPrototype?.mode !== 'independent') {
+        return false;
       }
 
-      return false;
+      return symbolName === searchedName;
     });
-
-    return independent.some((name) => name === searchedName);
   });
 
-  return foundComposition;
+  return foundComposition ?? null;
 };

@@ -124,6 +124,7 @@ export default function Home() {
 composition | string | false | If you have two animations with same name you can specify an id of that animation. You can get it from .html file generate by Adobe Animate (`var comp=AdobeAn.getComposition("C1475B64B160904BB90B34246A5FF54B");`) |
 | getAnimationObject | function | false | It is fired after component was mounted. It takes 1 argument – animation object that enables you to fire functions created in Adobe Animate
 paused | boolean | false | Whether an animation should be paused
+onError | function | false | Function called whenever an error is thrown inside the component
 
 All other props will be passed to div surrounding canvas
 
