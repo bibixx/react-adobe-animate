@@ -30,7 +30,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>React Adobe Animate exmaple</title>
+    <title>React Adobe Animate example</title>
   </head>
   <body>
     <div id="root"></div>

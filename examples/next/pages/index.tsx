@@ -1,8 +1,11 @@
 import * as React from "react";
 import { useState } from "react";
+import Head from 'next/head';
+import Link from 'next/link'
+
 import AnimateCC, { GetAnimationObjectParameter } from "react-adobe-animate";
 
-const App = () => {
+const Home = () => {
   const [animationObject, getAnimationObject] = useState<GetAnimationObjectParameter|null>(null);
   const [paused, setPaused] = useState(false);
   const [animationName, setAnimationName] = useState('lishtml5');
@@ -27,7 +30,17 @@ const App = () => {
 
   return (
     <div>
+      <Head>
+        <script src="https://code.createjs.com/1.0.0/createjs.min.js" type="text/javascript"></script>
+        <script src="/lishtml5.js" type="text/javascript"></script>
+        <script src="/lishtml5-with-background.js" type="text/javascript"></script>
+      </Head>
       <div>
+        <div>
+          <Link href="/test">
+            <a>Blog Post</a>
+          </Link>
+        </div>
         <div>
           <p>Paused</p>
           <select onChange={onPausedChange} defaultValue="false">
@@ -57,7 +70,7 @@ const App = () => {
           animationName={animationName}
           composition={composition}
           getAnimationObject={getAnimationObject}
-          onError={(...args) => console.log('onError', ...args)}
+          onError={() => console.log('onError')}
           paused={paused}
         />
       </div>
@@ -65,4 +78,4 @@ const App = () => {
   );
 };
 
-export default App;
+export default Home;

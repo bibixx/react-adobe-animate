@@ -1,4 +1,5 @@
-import React, { useMemo, useRef } from 'react';
+import * as React from 'react';
+import { useMemo, useRef } from 'react';
 
 import { useSetupAdobe } from 'src/hooks/useSetupAdobe/useSetupAdobe';
 import { getCanvasSize } from 'src/utils/getCanvasSize';
