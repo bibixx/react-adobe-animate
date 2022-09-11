@@ -26,6 +26,7 @@
   },
   "plugins": ["react", "react-hooks", "@typescript-eslint", "prettier"],
   "rules": {
+    "prettier/prettier": "error",
     "react/react-in-jsx-scope": "off",
     "no-duplicate-imports": "error",
     "@typescript-eslint/no-unused-vars": ["error", { "ignoreRestSiblings": true }]

@@ -11,7 +11,7 @@
   ],
   "scripts": {
     "start": "rollup -c --watch",
-    "lint": "npm run lint:tsc && npm run lint:eslint",
+    "lint": "yarn run lint:tsc && yarn run lint:eslint",
     "lint:eslint": "eslint src/*",
     "lint:tsc": "tsc --noEmit",
     "build": "rollup -c",
