@@ -138,7 +138,7 @@ Contributions, issues and feature requests are welcome!\
 Feel free to check [issues page](https://github.com/bibixx/react-adobe-animate/issues).
 
 For development purposes you can use the `examples` folder. \
-You'll find instructions on how to use it in [`examples/README.md`](https://github.com/bibixx/react-adobe-animate/blob/master/example/README.md)
+You'll find instructions on how to use it in [`examples/README.md`](https://github.com/bibixx/react-adobe-animate/blob/main/example/README.md)
 
 ## Show your support
 
@@ -147,4 +147,4 @@ Give a ⭐️ if this project helped you!
 ## 📝 License
 
 Copyright © 2019-2022 [bibixx](https://github.com/bibixx) <bartosz+a.github@legiec.io>.<br />
-This project is [MIT](https://github.com/bibixx/react-adobe-animate/blob/master/LICENSE.md) licensed.
+This project is [MIT](https://github.com/bibixx/react-adobe-animate/blob/main/LICENSE.md) licensed.
