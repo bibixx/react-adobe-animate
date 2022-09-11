@@ -5,7 +5,6 @@ import typescript from 'rollup-plugin-typescript2';
 
 import pkg from './package.json';
 
-// eslint-disable-next-line import/no-default-export
 export default {
   input: 'src/index.ts',
   output: [
@@ -29,7 +28,6 @@ export default {
       rollupCommonJSResolveHack: true,
       exclude: '**/__tests__/**',
       clean: true,
-      check: false,
     }),
     commonjs({
       include: ['node_modules/**'],

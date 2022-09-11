@@ -1,5 +1,4 @@
-/* eslint-disable vars-on-top */
-/* eslint-disable no-var */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type CreateJS from 'createjs-module';
 
 type Stage = typeof CreateJS.Stage;

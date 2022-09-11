@@ -97,9 +97,9 @@ export const useSetupAdobe = ({
 
   const cleanup = (loader?: CreateJS.LoadQueue) => {
     const stage = stageRef.current;
-    loader?.removeEventListener('fileload', handleFileLoad as any);
-    loader?.removeEventListener('complete', handleComplete as any);
-    loader?.removeEventListener('error', handleFileError as any);
+    loader?.removeEventListener('fileload', handleFileLoad);
+    loader?.removeEventListener('complete', handleComplete);
+    loader?.removeEventListener('error', handleFileError);
 
     setProperties(undefined);
     compositionRef.current = undefined;
@@ -143,9 +143,12 @@ export const useSetupAdobe = ({
     const loader = new window.createjs.LoadQueue(false);
 
     loader.loadManifest(manifest);
+
+    /* eslint-disable @typescript-eslint/no-explicit-any */
     loader.addEventListener('fileload', handleFileLoad as any);
     loader.addEventListener('complete', handleComplete as any);
     loader.addEventListener('error', handleFileError as any);
+    /* eslint-enable @typescript-eslint/no-explicit-any */
 
     if (manifest.filter(({ type }) => type === 'image').length === 0) {
       handleComplete(null);

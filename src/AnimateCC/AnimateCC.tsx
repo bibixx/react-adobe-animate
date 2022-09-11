@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { useMemo, useRef } from 'react';
 
 import { useSetupAdobe } from 'src/hooks/useSetupAdobe/useSetupAdobe';
@@ -42,7 +41,6 @@ export const AnimateCC = (props: Props) => {
           height: '100%',
           ...additionalStyles,
         }}
-        // eslint-disable-next-line react/jsx-props-no-spreading
         {...rest}
       >
         <canvas

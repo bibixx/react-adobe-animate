@@ -1,56 +1,33 @@
 {
-  "extends": [
-    "airbnb",
-    "airbnb/hooks",
-    "airbnb-typescript",
-    "plugin:prettier/recommended"
-  ],
-  "parserOptions": {
-    "project": "./tsconfig.json"
-  },
-  "plugins": [
-    "prettier",
-    "simple-import-sort"
-  ],
   "env": {
-    "browser": true
+    "browser": true,
+    "es2021": true
   },
-  "globals": {
-    "AdobeAn": true
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:react-hooks/recommended",
+    "plugin:react/jsx-runtime",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "settings": {
+    "react": {
+      "version": "18"
+    }
   },
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "plugins": ["react", "react-hooks", "@typescript-eslint", "prettier"],
   "rules": {
-    "func-names": 0,
-    "prettier/prettier": "error",
-    "import/prefer-default-export": 0,
-    "react/require-default-props": 0,
-    "no-restricted-syntax": 0,
-    "react/function-component-definition": [
-      2, {
-        "namedComponents": "arrow-function",
-        "unnamedComponents": "arrow-function"
-      }
-    ],
-    "simple-import-sort/exports": "error",
-    "simple-import-sort/imports": [
-      1,
-      {
-        "groups": [
-          // Side effect imports.
-          ["^\\u0000"],
-          // Packages. `react` related packages come first.
-          // Absolute imports and other imports such as Vue-style `@/foo`.
-          ["^react", "^@?\\w"],
-          // Internal packages.
-          // Anything that does not start with a dot.
-          [
-            "^(src/hooks)(/.*|$)",
-            "^(src/utils)(/.*|$)"
-          ],
-          ["^(src)(/.*|$)"],
-          ["^[^.]"],
-          ["^\\."]
-        ]
-      }
-    ]
+    "react/react-in-jsx-scope": "off",
+    "no-duplicate-imports": "error",
+    "@typescript-eslint/no-unused-vars": ["error", { "ignoreRestSiblings": true }]
   }
 }

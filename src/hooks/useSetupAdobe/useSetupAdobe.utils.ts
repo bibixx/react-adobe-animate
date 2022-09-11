@@ -21,7 +21,6 @@ export const createSpriteSheets = (
 };
 
 export const resizeCanvas = (stage: CreateJS.Stage) => {
-  /* eslint-disable no-param-reassign */
   const pRatio = window.devicePixelRatio;
 
   stage.scaleX = pRatio;
@@ -29,7 +28,6 @@ export const resizeCanvas = (stage: CreateJS.Stage) => {
   stage.tickOnUpdate = false;
   stage.update();
   stage.tickOnUpdate = true;
-  /* eslint-enable no-param-reassign */
 };
 
 export const startAnimation = (
@@ -47,6 +45,6 @@ export const startAnimation = (
 };
 
 export const stopAnimation = (stage: CreateJS.Stage) => {
-  // `as any` has been used as `removeEventListener` lacks signature for `createjs.Stage`
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   window.createjs.Ticker.removeEventListener('tick', stage as any);
 };
