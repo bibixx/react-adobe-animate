@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
-import AnimateCC, { GetAnimationObjectParameter } from 'react-adobe-animate';
+import { AnimateCC, GetAnimationObjectParameter } from 'react-adobe-animate';
 
 const App = () => {
   const [animationObject, getAnimationObject] =
