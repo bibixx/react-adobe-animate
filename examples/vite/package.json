@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "react": "^18.2.0",
-    "react-adobe-animate": "^2.5.0",
+    "react-adobe-animate": "^3.0.1",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
