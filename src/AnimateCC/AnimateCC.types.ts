@@ -1,6 +1,6 @@
 import { HTMLProps } from 'react';
 
-import { Properties } from 'src/types/AdobeAn';
+import { Properties } from 'types/AdobeAn';
 
 export type GetAnimationObjectParameter = createjs.DisplayObject;
 export type AnimationObject = createjs.DisplayObject;

@@ -1,4 +1,4 @@
-import { Properties } from 'src/types/AdobeAn';
+import { Properties } from 'types/AdobeAn';
 
 export const getCanvasSize = (properties: Properties | undefined) => {
   if (typeof window === 'undefined') {

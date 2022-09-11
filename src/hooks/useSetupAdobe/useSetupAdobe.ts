@@ -1,11 +1,11 @@
 import { MutableRefObject, useEffect, useRef, useState } from 'react';
 import type CreateJS from 'createjs-module';
 
-import { getCompositionId } from 'src/utils/getCompositionId';
-import { log } from 'src/utils/log';
+import { getCompositionId } from '../../utils/getCompositionId';
+import { log } from '../../utils/log';
 
-import { Props } from 'src/AnimateCC/AnimateCC.types';
-import { Composition, Properties } from 'src/types/AdobeAn';
+import { Props } from '../../AnimateCC/AnimateCC.types';
+import { Composition, Properties } from '../../types/AdobeAn';
 
 import {
   createSpriteSheets,

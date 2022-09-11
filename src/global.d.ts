@@ -1,5 +1,5 @@
 import type CreateJS from 'createjs-module';
-import { An } from 'src/types/AdobeAn';
+import { An } from 'types/AdobeAn';
 
 declare global {
 	interface Window {

@@ -1,8 +1,8 @@
 import { useMemo, useRef } from 'react';
 
-import { useSetupAdobe } from 'src/hooks/useSetupAdobe/useSetupAdobe';
-import { getCanvasSize } from 'src/utils/getCanvasSize';
-import { hexToRgba } from 'src/utils/hexToRgba';
+import { useSetupAdobe } from 'hooks/useSetupAdobe/useSetupAdobe';
+import { getCanvasSize } from 'utils/getCanvasSize';
+import { hexToRgba } from 'utils/hexToRgba';
 
 import { Props } from './AnimateCC.types';
 

@@ -1,6 +1,6 @@
 import type CreateJS from 'createjs-module';
 
-import { Composition, Library } from 'src/types/AdobeAn';
+import { Composition, Library } from 'types/AdobeAn';
 
 export const createSpriteSheets = (
   queue: CreateJS.AbstractLoader,
