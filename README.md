@@ -9,13 +9,40 @@
 
 > The component for embedding animations from Adobe Animate.
 
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of contents</summary>
+  <ol>
+    <li><a href="#installation">Installation</a></li>
+    <li><a href="#examples">Examples</a></li>
+    <li><a href="#dependencies">Dependencies</a></li>
+    <li><a href="#how-to-use">How to use</a>
+    <ul>
+      <li><a href="#nextjs">Next.js</a></li>
+      <li><a href="#props">Props</a></li>
+      <li><a href="#faq">FAQ</a></li>
+    </ul>
+    </li>
+    <li><a href="#-questions">🙋‍♂️ Questions</a></li>
+    <li><a href="#-contributing">🤝 Contributing</a></li>
+    <li><a href="#show-your-support">Show your support</a></li>
+    <li><a href="#-license">📝 License</a></li>
+  </ol>
+</details>
+
+
 ## Installation
 
-`npm install -S react-adobe-animate`
+```bash
+npm install react-adobe-animate
+# or
+yarn add react-adobe-animate
+```
 
 ## Examples
 
-* [Simple implementation (codesandbox.io)](https://githubbox.com/bibixx/react-adobe-animate/tree/master/example)
+* `react-adobe-animate` with standard React project using Vite – [examples/vite/src/App.tsx](./examples/vite/src/App.tsx) ([Sandbox](https://githubbox.com/bibixx/react-adobe-animate/tree/main/examples/vite))
+* `react-adobe-animate` with using Next.js – [examples/next/pages/index.tsx](./examples/next/pages/index.tsx) ([Sandbox](https://githubbox.com/bibixx/react-adobe-animate/tree/main/examples/next))
 
 ## Dependencies
 
@@ -24,28 +51,32 @@
 * Your animation – add .js file exported from Adobe Animate to page with `<script>` tag
 
 ## How to use
-### Example
 #### index.html
+In your `index.html` file you should import `CreateJS` and any other animation js file. Note that this should be done **before** import of your main jsx file to ensure that they are loaded before React script is executed.
+
 ```html
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>React Adobe Animate exmaple</title>
+    <title>React Adobe Animate example</title>
   </head>
   <body>
     <div id="root"></div>
     <script src="https://code.createjs.com/1.0.0/createjs.min.js" type="text/javascript"></script>
     <script src="./lishtml5-with-background.js" type="text/javascript"></script>
     <script src="./lishtml5.js" type="text/javascript"></script>
+    <script src="/src/your-main-react-file.jsx"></script>
   </body>
 </html>
 
 ```
 
 #### App.tsx
+`react-adobe-animate` exposes a `AnimateCC` component used to render the animation. For more details on the props passed to the component please see [Props](#props).
+
 ```tsx
 import { useState } from "react";
-import AnimateCC, { GetAnimationObjectParameter } from "react-adobe-animate";
+import { AnimateCC, GetAnimationObjectParameter } from "react-adobe-animate";
 
 const App = () => {
   const [paused, setPaused] = useState(true);
@@ -75,55 +106,19 @@ const App = () => {
 ```
 
 ### Next.js
-To use the component with [Next.js](https://github.com/vercel/next.js/) you have to include CreateJS and Animate files (you have to put those into `public` folder first) in `Head` component.
+To use the component with [Next.js](https://github.com/vercel/next.js/) you have to include CreateJS and Animate files (you have to put those into `public` folder first) with the `Script` component.
 
-#### pages/index.tsx
-```tsx
-import { useState } from "react";
-import Head from 'next/head';
-import AnimateCC, { GetAnimationObjectParameter } from "react-adobe-animate";
-
-export default function Home() {
-  const [paused, setPaused] = useState(true);
-  const [animationObject, getAnimationObject] = useState<GetAnimationObjectParameter|null>(null);
-  const onClick = () => setPaused(!paused);
-
-  console.log(animationObject);
-
-  return (
-    <div style={{ width: "400px" }}>
-      <Head>
-        <script src="https://code.createjs.com/1.0.0/createjs.min.js" type="text/javascript"></script>
-        <script src="/lishtml5.js" type="text/javascript"></script>
-        <script src="/lishtml5-with-background.js" type="text/javascript"></script>
-      </Head>
-
-      <AnimateCC
-        animationName="lishtml5"
-        getAnimationObject={getAnimationObject}
-        paused={paused}
-      />
-
-      <AnimateCC
-        animationName="lishtml5"
-        composition="C1475B64B160904BB90B34246A5FF54B"
-        paused={paused}
-      />
-
-      <button onClick={onClick}>{paused ? "Unpause" : "Pause"}</button><br />
-    </div>
-  );
-}
-```
+For detailed example see [examples/next/pages/index.tsx](./examples/next/pages/index.tsx).
 
 ### Props
 
-| Prop name | Type | Required | Description  |
-| --------- | ---- | -------- | ------------ |
-| animationName | string | true | Name of animation (`exportRoot = new lib.animationName();` in js file. There the name is `(lib.animationName = function`. Also usually name of published file) |
-composition | string | false | If you have two animations with same name you can specify an id of that animation. You can get it from .html file generate by Adobe Animate (`var comp=AdobeAn.getComposition("C1475B64B160904BB90B34246A5FF54B");`) |
-| getAnimationObject | function | false | It is fired after component was mounted. It takes 1 argument – animation object that enables you to fire functions created in Adobe Animate
-paused | boolean | false | Whether an animation should be paused
+| Prop name          | Type     | Required | Description  |
+| ------------------ | -------- | -------- | ------------ |
+| animationName      | string   | true     | Name of animation (`exportRoot = new lib.animationName();` in js file. There the name is `(lib.animationName = function`. Also usually name of published file) |
+| composition        | string   | false    | If you have two animations with same name you can specify an id of that animation. You can get it from .html file generate by Adobe Animate (`var comp=AdobeAn.getComposition("C1475B64B160904BB90B34246A5FF54B");`) |
+| getAnimationObject | function | false    | It is fired after component was mounted. It takes 1 argument – animation object that enables you to fire functions created in Adobe Animate |
+| paused             | boolean  | false    | Whether an animation should be paused |
+| onError            | function | false    | Function called whenever an error is thrown inside the component |
 
 All other props will be passed to div surrounding canvas
 
@@ -142,8 +137,8 @@ Should you have any questions on how to use/setup the component feel free to ask
 Contributions, issues and feature requests are welcome!\
 Feel free to check [issues page](https://github.com/bibixx/react-adobe-animate/issues).
 
-For development purposes you can use the `example` folder. \
-You'll find instructions on how to use it in [`example/README.md`](https://github.com/bibixx/react-adobe-animate/blob/master/example/README.md)
+For development purposes you can use the `examples` folder. \
+You'll find instructions on how to use it in [`examples/README.md`](https://github.com/bibixx/react-adobe-animate/blob/master/example/README.md)
 
 ## Show your support
 
@@ -151,5 +146,5 @@ Give a ⭐️ if this project helped you!
 
 ## 📝 License
 
-Copyright © 2019-2020 [bibixx](https://github.com/bibixx) <bartosz+a.github@legiec.io>.<br />
+Copyright © 2019-2022 [bibixx](https://github.com/bibixx) <bartosz+a.github@legiec.io>.<br />
 This project is [MIT](https://github.com/bibixx/react-adobe-animate/blob/master/LICENSE.md) licensed.

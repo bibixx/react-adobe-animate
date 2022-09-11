@@ -2,6 +2,6 @@
 .DS_Store
 yarn-error.log
 build/
-yarn.lock
+package-lock.json
 .eslintcache
 .husky/_
