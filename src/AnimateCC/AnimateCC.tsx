@@ -9,7 +9,7 @@ import { Props } from './AnimateCC.types';
 export const AnimateCC = (props: Props) => {
   const {
     style: additionalStyles,
-    canvasStyle: additionalCanvasStyles.
+    canvasStyle: additionalCanvasStyles,
     animationName,
     composition,
     getAnimationObject,
