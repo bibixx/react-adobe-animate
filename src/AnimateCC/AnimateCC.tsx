@@ -9,6 +9,7 @@ import { Props } from './AnimateCC.types';
 export const AnimateCC = (props: Props) => {
   const {
     style: additionalStyles,
+    canvasStyle: additionalCanvasStyles,
     animationName,
     composition,
     getAnimationObject,
@@ -51,6 +52,7 @@ export const AnimateCC = (props: Props) => {
             display: 'block',
             width: '100%',
             backgroundColor: color,
+            ...additionalCanvasStyles,
           }}
         />
         <div
