@@ -630,10 +630,10 @@ postcss@^8.4.16:
     picocolors "^1.0.0"
     source-map-js "^1.0.2"
 
-react-adobe-animate@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/react-adobe-animate/-/react-adobe-animate-3.0.1.tgz#f6e6220880caba5ed2db0f9e68ad3db3e81d9033"
-  integrity sha512-Ns10EUWm8JRZWZrgXP7vhIEjMSN+GopQhp/phXEVq9BnllLxtp52X1VgUiRsM3RJFrKfSu6VUinLCLoJhTDEsA==
+react-adobe-animate@3:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/react-adobe-animate/-/react-adobe-animate-3.1.0.tgz#c904bb668c34ca92ac5a78d89fe95d18baf8dba4"
+  integrity sha512-Kd96q36XZqEe7fZ3k+7jp6uHMebDaLyHhZR3YVUgmGa5SNHqV2q5zHZaPNRJJKjgt7gFT6e/I44BoTfFecXQBw==
 
 react-dom@^18.2.0:
   version "18.2.0"
